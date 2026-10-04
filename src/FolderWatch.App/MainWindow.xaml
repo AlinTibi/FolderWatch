@@ -1,0 +1,67 @@
+<Window x:Class="FolderWatch.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="FolderWatch" Height="720" Width="1100" MinHeight="560" MinWidth="860"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,18">
+            <TextBlock Text="FolderWatch" FontSize="28" FontWeight="SemiBold" />
+            <TextBlock Text="Create folder snapshots and detect file changes." Foreground="{StaticResource MutedBrush}" Margin="0,4,0,0" />
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="0,0,0,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox x:Name="FolderPathBox" Grid.Column="0" VerticalContentAlignment="Center" Margin="0,0,8,0" IsReadOnly="True" />
+            <Button Grid.Column="1" Content="Browse" Click="Browse_Click" />
+            <Button Grid.Column="2" Content="Create Snapshot" Click="CreateSnapshot_Click" />
+            <Button Grid.Column="3" Content="Compare Snapshot" Click="CompareSnapshot_Click" Margin="0" />
+        </Grid>
+
+        <Border Grid.Row="2" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6">
+            <DataGrid x:Name="ResultsGrid"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      CanUserAddRows="False"
+                      HeadersVisibility="Column"
+                      GridLinesVisibility="Horizontal"
+                      Background="Transparent"
+                      Foreground="{StaticResource TextBrush}"
+                      BorderThickness="0"
+                      RowBackground="#1E1E1E"
+                      AlternatingRowBackground="#242424">
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="#292929" />
+                        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+                        <Setter Property="Padding" Value="10,8" />
+                        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+                    </Style>
+                </DataGrid.Resources>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Status" Binding="{Binding Change}" Width="130" />
+                    <DataGridTextColumn Header="File" Binding="{Binding RelativePath}" Width="*" />
+                    <DataGridTextColumn Header="Old size" Binding="{Binding OldSize}" Width="120" />
+                    <DataGridTextColumn Header="New size" Binding="{Binding NewSize}" Width="120" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+
+        <DockPanel Grid.Row="3" Margin="0,12,0,0">
+            <ProgressBar x:Name="ProgressBar" Width="160" Height="5" IsIndeterminate="True" Visibility="Collapsed" DockPanel.Dock="Right" />
+            <TextBlock x:Name="StatusText" Text="Ready" Foreground="{StaticResource MutedBrush}" TextTrimming="CharacterEllipsis" />
+        </DockPanel>
+    </Grid>
+</Window>
