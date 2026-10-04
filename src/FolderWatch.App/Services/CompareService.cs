@@ -37,4 +37,34 @@ public sealed class CompareService
 
         return results;
     }
+
+    public static IReadOnlyList<ComparisonItem> ApplyFilter(IReadOnlyList<ComparisonItem> results, ResultFilter filter)
+    {
+        if (filter == ResultFilter.All)
+        {
+            return results;
+        }
+
+        var changeType = ToChangeType(filter);
+        return results.Where(x => x.Change == changeType).ToList();
+    }
+
+    public static ComparisonStats ComputeStats(IReadOnlyList<ComparisonItem> results)
+    {
+        return new ComparisonStats(
+            Total: results.Count,
+            Added: results.Count(x => x.Change == ChangeType.Added),
+            Removed: results.Count(x => x.Change == ChangeType.Removed),
+            Modified: results.Count(x => x.Change == ChangeType.Modified),
+            Unchanged: results.Count(x => x.Change == ChangeType.Unchanged));
+    }
+
+    private static ChangeType ToChangeType(ResultFilter filter) => filter switch
+    {
+        ResultFilter.Added => ChangeType.Added,
+        ResultFilter.Removed => ChangeType.Removed,
+        ResultFilter.Modified => ChangeType.Modified,
+        ResultFilter.Unchanged => ChangeType.Unchanged,
+        _ => throw new ArgumentOutOfRangeException(nameof(filter), filter, "Filter does not map to a change type.")
+    };
 }

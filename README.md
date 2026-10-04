@@ -9,6 +9,10 @@ FolderWatch is a lightweight Windows desktop utility for creating snapshots of f
 - Store relative path, size, modified time and SHA-256 hash
 - Compare a saved snapshot with the current folder state
 - Detect Added, Removed, Modified and Unchanged files
+- Filter comparison results by status (All, Added, Removed, Modified, Unchanged)
+- Live statistics (Total, Added, Removed, Modified, Unchanged) above the results
+- Clear button to reset results, statistics and the filter while keeping the selected folder
+- Export the currently filtered comparison results to CSV (UTF-8, Excel-compatible)
 - Dark Windows desktop UI
 - Fully offline
 - No external NuGet dependencies
@@ -35,9 +39,9 @@ dotnet build FolderWatch.sln -c Release
 
 ## Status
 
-Early development version. The core snapshot and comparison workflow is implemented.
+Early development version. The core snapshot and comparison workflow is implemented, including result filtering and CSV export.
 
-Planned next steps include filtering, CSV export, cancellation/progress improvements, better result visualization and packaged releases.
+Planned next steps include cancellation/progress improvements, better result visualization and packaged releases.
 
 ## License
 
