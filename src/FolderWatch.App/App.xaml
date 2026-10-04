@@ -1,0 +1,33 @@
+<Application x:Class="FolderWatch.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <SolidColorBrush x:Key="BgBrush" Color="#121212" />
+        <SolidColorBrush x:Key="PanelBrush" Color="#1E1E1E" />
+        <SolidColorBrush x:Key="BorderBrush" Color="#343434" />
+        <SolidColorBrush x:Key="TextBrush" Color="#F2F2F2" />
+        <SolidColorBrush x:Key="MutedBrush" Color="#A9A9A9" />
+        <SolidColorBrush x:Key="AccentBrush" Color="#4F8CFF" />
+
+        <Style TargetType="Window">
+            <Setter Property="Background" Value="{StaticResource BgBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource AccentBrush}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Padding" Value="14,8" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource PanelBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+            <Setter Property="Padding" Value="8" />
+        </Style>
+    </Application.Resources>
+</Application>
