@@ -1,5 +1,7 @@
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
+using FolderWatch.App.Models;
 using FolderWatch.App.Services;
 using Microsoft.Win32;
 
@@ -9,10 +11,15 @@ public partial class MainWindow : Window
 {
     private readonly SnapshotService _snapshotService = new();
     private readonly CompareService _compareService = new();
+    private readonly CsvExportService _csvExportService = new();
+
+    private IReadOnlyList<ComparisonItem> _allResults = Array.Empty<ComparisonItem>();
 
     public MainWindow()
     {
         InitializeComponent();
+        FilterCombo.SelectedIndex = 0;
+        SetBusy(false);
     }
 
     private void Browse_Click(object sender, RoutedEventArgs e)
@@ -26,7 +33,7 @@ public partial class MainWindow : Window
         {
             FolderPathBox.Text = dialog.FolderName;
             StatusText.Text = "Folder selected.";
-            ResultsGrid.ItemsSource = null;
+            ResetResults();
         }
     }
 
@@ -92,14 +99,11 @@ public partial class MainWindow : Window
 
             var progress = new Progress<string>(path => StatusText.Text = $"Scanning: {path}");
             var current = await _snapshotService.CreateAsync(FolderPathBox.Text, progress);
-            var results = _compareService.Compare(previous, current);
+            _allResults = _compareService.Compare(previous, current);
+            ApplyFilter();
 
-            ResultsGrid.ItemsSource = results;
-
-            var added = results.Count(x => x.Change == Models.ChangeType.Added);
-            var removed = results.Count(x => x.Change == Models.ChangeType.Removed);
-            var modified = results.Count(x => x.Change == Models.ChangeType.Modified);
-            StatusText.Text = $"Comparison complete — Added: {added}, Removed: {removed}, Modified: {modified}.";
+            var stats = CompareService.ComputeStats(_allResults);
+            StatusText.Text = $"Comparison complete — Added: {stats.Added}, Removed: {stats.Removed}, Modified: {stats.Modified}, Unchanged: {stats.Unchanged}.";
         }
         catch (Exception ex)
         {
@@ -109,6 +113,84 @@ public partial class MainWindow : Window
         {
             SetBusy(false);
         }
+    }
+
+    private async void ExportCsv_Click(object sender, RoutedEventArgs e)
+    {
+        if (_allResults.Count == 0)
+        {
+            return;
+        }
+
+        var saveDialog = new SaveFileDialog
+        {
+            Title = "Export comparison results",
+            Filter = "CSV files (*.csv)|*.csv",
+            FileName = $"FolderWatch-Results-{DateTime.Now:yyyyMMdd-HHmmss}.csv"
+        };
+
+        if (saveDialog.ShowDialog() != true)
+        {
+            return;
+        }
+
+        try
+        {
+            SetBusy(true, "Exporting CSV...");
+            var visibleResults = CompareService.ApplyFilter(_allResults, GetSelectedFilter());
+            await _csvExportService.ExportAsync(visibleResults, saveDialog.FileName);
+            StatusText.Text = $"Exported {visibleResults.Count:N0} row(s) to {Path.GetFileName(saveDialog.FileName)}.";
+        }
+        catch (Exception ex)
+        {
+            ShowError(ex);
+        }
+        finally
+        {
+            SetBusy(false);
+        }
+    }
+
+    private void Clear_Click(object sender, RoutedEventArgs e)
+    {
+        ResetResults();
+        StatusText.Text = "Results cleared.";
+    }
+
+    private void FilterCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        ApplyFilter();
+    }
+
+    private void ResetResults()
+    {
+        _allResults = Array.Empty<ComparisonItem>();
+        FilterCombo.SelectedIndex = 0;
+        ApplyFilter();
+        SetBusy(false);
+    }
+
+    private void ApplyFilter()
+    {
+        var filtered = CompareService.ApplyFilter(_allResults, GetSelectedFilter());
+        ResultsGrid.ItemsSource = filtered;
+        UpdateStatistics();
+    }
+
+    private void UpdateStatistics()
+    {
+        var stats = CompareService.ComputeStats(_allResults);
+        TotalCountText.Text = stats.Total.ToString();
+        AddedCountText.Text = stats.Added.ToString();
+        RemovedCountText.Text = stats.Removed.ToString();
+        ModifiedCountText.Text = stats.Modified.ToString();
+        UnchangedCountText.Text = stats.Unchanged.ToString();
+    }
+
+    private ResultFilter GetSelectedFilter()
+    {
+        var tag = (FilterCombo.SelectedItem as ComboBoxItem)?.Tag as string;
+        return tag is not null && Enum.TryParse<ResultFilter>(tag, out var filter) ? filter : ResultFilter.All;
     }
 
     private bool EnsureFolderSelected()
@@ -125,6 +207,16 @@ public partial class MainWindow : Window
     private void SetBusy(bool busy, string? status = null)
     {
         ProgressBar.Visibility = busy ? Visibility.Visible : Visibility.Collapsed;
+
+        BrowseButton.IsEnabled = !busy;
+        CreateSnapshotButton.IsEnabled = !busy;
+        CompareSnapshotButton.IsEnabled = !busy;
+        FilterCombo.IsEnabled = !busy;
+
+        var hasResults = _allResults.Count > 0;
+        ExportCsvButton.IsEnabled = !busy && hasResults;
+        ClearButton.IsEnabled = !busy && hasResults;
+
         if (status is not null)
         {
             StatusText.Text = status;
