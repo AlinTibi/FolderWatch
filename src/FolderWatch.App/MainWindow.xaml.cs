@@ -103,7 +103,14 @@ public partial class MainWindow : Window
             ApplyFilter();
 
             var stats = CompareService.ComputeStats(_allResults);
-            StatusText.Text = $"Comparison complete — Added: {stats.Added}, Removed: {stats.Removed}, Modified: {stats.Modified}, Unchanged: {stats.Unchanged}.";
+            var summary = $"Comparison complete — Added: {stats.Added}, Removed: {stats.Removed}, Modified: {stats.Modified}, Unchanged: {stats.Unchanged}.";
+
+            if (previous.Files.Count > 0 && current.Files.Count > 0 && stats.Modified == 0 && stats.Unchanged == 0)
+            {
+                summary += " Warning: no matching files were found — the snapshot may be from a different folder.";
+            }
+
+            StatusText.Text = summary;
         }
         catch (Exception ex)
         {
