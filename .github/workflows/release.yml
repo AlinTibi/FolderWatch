@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore FolderWatch.sln
+
+      - name: Build
+        run: dotnet build FolderWatch.sln --configuration Release --no-restore
+
+      - name: Publish win-x64 (self-contained, single file)
+        run: dotnet publish src/FolderWatch.App/FolderWatch.App.csproj -c Release -r win-x64 --self-contained true -o publish/win-x64
+
+      - name: Package release ZIP
+        id: package
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}"
+          $zipName = "FolderWatch-$version-win-x64.zip"
+
+          New-Item -ItemType Directory -Force -Path stage | Out-Null
+          Copy-Item "publish/win-x64/FolderWatch.exe" "stage/FolderWatch.exe"
+          Copy-Item "README.md" "stage/README.md"
+          Copy-Item "LICENSE" "stage/LICENSE"
+
+          Compress-Archive -Path "stage/*" -DestinationPath $zipName -CompressionLevel Optimal
+          "zip_name=$zipName" >> $env:GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh release create "${{ github.ref_name }}"
+          "${{ steps.package.outputs.zip_name }}"
+          --title "FolderWatch ${{ github.ref_name }}"
+          --generate-notes
