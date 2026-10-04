@@ -6,6 +6,8 @@ namespace FolderWatch.App.Services;
 
 public sealed class SnapshotService
 {
+    public const string SnapshotFileSuffix = ".folderwatch.json";
+
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = true
@@ -94,6 +96,11 @@ public sealed class SnapshotService
 
             foreach (var file in files)
             {
+                if (file.EndsWith(SnapshotFileSuffix, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
                 yield return file;
             }
 
@@ -113,8 +120,31 @@ public sealed class SnapshotService
 
             foreach (var directory in directories)
             {
+                // Skip reparse points (symlinks/junctions): following them can revisit an
+                // ancestor directory and recurse forever on a circular link.
+                if (IsReparsePoint(directory))
+                {
+                    continue;
+                }
+
                 pending.Push(directory);
             }
+        }
+    }
+
+    private static bool IsReparsePoint(string directoryPath)
+    {
+        try
+        {
+            return (File.GetAttributes(directoryPath) & FileAttributes.ReparsePoint) != 0;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return false;
+        }
+        catch (IOException)
+        {
+            return false;
         }
     }
 }
