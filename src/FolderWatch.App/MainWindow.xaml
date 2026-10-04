@@ -7,6 +7,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -25,12 +26,49 @@
             </Grid.ColumnDefinitions>
 
             <TextBox x:Name="FolderPathBox" Grid.Column="0" VerticalContentAlignment="Center" Margin="0,0,8,0" IsReadOnly="True" />
-            <Button Grid.Column="1" Content="Browse" Click="Browse_Click" />
-            <Button Grid.Column="2" Content="Create Snapshot" Click="CreateSnapshot_Click" />
-            <Button Grid.Column="3" Content="Compare Snapshot" Click="CompareSnapshot_Click" Margin="0" />
+            <Button x:Name="BrowseButton" Grid.Column="1" Content="Browse" Click="Browse_Click" />
+            <Button x:Name="CreateSnapshotButton" Grid.Column="2" Content="Create Snapshot" Click="CreateSnapshot_Click" />
+            <Button x:Name="CompareSnapshotButton" Grid.Column="3" Content="Compare Snapshot" Click="CompareSnapshot_Click" Margin="0" />
         </Grid>
 
-        <Border Grid.Row="2" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6">
+        <Grid Grid.Row="2" Margin="0,0,0,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock Text="Filter:" VerticalAlignment="Center" Margin="0,0,8,0" />
+                <ComboBox x:Name="FilterCombo" Width="140" SelectionChanged="FilterCombo_SelectionChanged">
+                    <ComboBoxItem Content="All" Tag="All" />
+                    <ComboBoxItem Content="Added" Tag="Added" />
+                    <ComboBoxItem Content="Removed" Tag="Removed" />
+                    <ComboBoxItem Content="Modified" Tag="Modified" />
+                    <ComboBoxItem Content="Unchanged" Tag="Unchanged" />
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="24,0,0,0">
+                <TextBlock Text="Total:" Foreground="{StaticResource MutedBrush}" Margin="0,0,4,0" />
+                <TextBlock x:Name="TotalCountText" Text="0" FontWeight="SemiBold" Margin="0,0,16,0" />
+                <TextBlock Text="Added:" Foreground="{StaticResource MutedBrush}" Margin="0,0,4,0" />
+                <TextBlock x:Name="AddedCountText" Text="0" FontWeight="SemiBold" Margin="0,0,16,0" />
+                <TextBlock Text="Removed:" Foreground="{StaticResource MutedBrush}" Margin="0,0,4,0" />
+                <TextBlock x:Name="RemovedCountText" Text="0" FontWeight="SemiBold" Margin="0,0,16,0" />
+                <TextBlock Text="Modified:" Foreground="{StaticResource MutedBrush}" Margin="0,0,4,0" />
+                <TextBlock x:Name="ModifiedCountText" Text="0" FontWeight="SemiBold" Margin="0,0,16,0" />
+                <TextBlock Text="Unchanged:" Foreground="{StaticResource MutedBrush}" Margin="0,0,4,0" />
+                <TextBlock x:Name="UnchangedCountText" Text="0" FontWeight="SemiBold" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button x:Name="ExportCsvButton" Content="Export CSV" Click="ExportCsv_Click" />
+                <Button x:Name="ClearButton" Content="Clear" Click="Clear_Click" Margin="0" />
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="3" Background="{StaticResource PanelBrush}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6">
             <DataGrid x:Name="ResultsGrid"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
@@ -59,7 +97,7 @@
             </DataGrid>
         </Border>
 
-        <DockPanel Grid.Row="3" Margin="0,12,0,0">
+        <DockPanel Grid.Row="4" Margin="0,12,0,0">
             <ProgressBar x:Name="ProgressBar" Width="160" Height="5" IsIndeterminate="True" Visibility="Collapsed" DockPanel.Dock="Right" />
             <TextBlock x:Name="StatusText" Text="Ready" Foreground="{StaticResource MutedBrush}" TextTrimming="CharacterEllipsis" />
         </DockPanel>
