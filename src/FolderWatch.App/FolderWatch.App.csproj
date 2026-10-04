@@ -8,4 +8,23 @@
     <AssemblyName>FolderWatch</AssemblyName>
     <RootNamespace>FolderWatch.App</RootNamespace>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Product>FolderWatch</Product>
+    <Description>Windows folder snapshot and file change comparison tool</Description>
+    <Company>AlinTibi</Company>
+    <Authors>AlinTibi</Authors>
+    <Copyright>Copyright (c) 2026 Alin Radulescu</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RuntimeIdentifier)' == 'win-x64'">
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
+  </PropertyGroup>
 </Project>
