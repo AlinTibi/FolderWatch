@@ -2,6 +2,18 @@
 
 FolderWatch is a lightweight, fully offline Windows desktop tool for snapshotting a folder and later detecting what changed in it — files added, removed or modified — using SHA-256 hashing.
 
+## Current release and download
+
+[FolderWatch v1.0.0](https://github.com/AlinTibi/FolderWatch/releases/tag/v1.0.0)
+is the current Windows x64 release.
+
+[Download the portable ZIP](https://github.com/AlinTibi/FolderWatch/releases/download/v1.0.0/FolderWatch-v1.0.0-win-x64.zip),
+extract it, and run `FolderWatch.exe`. Keep the extracted files together.
+
+## Screenshot
+
+![FolderWatch Windows application](docs/images/main.webp)
+
 ## Features
 
 - Select any local folder and create a JSON snapshot of its contents
@@ -49,3 +61,19 @@ FolderWatch runs fully offline. It sends no telemetry, phones home to nothing, a
 ## License
 
 MIT License. See [LICENSE](LICENSE).
+
+## Support and security
+
+For software questions, email [support@almarfeld.com](mailto:support@almarfeld.com).
+Report reproducible bugs and feature requests in [FolderWatch issues](https://github.com/AlinTibi/FolderWatch/issues).
+Do not post private files or credentials in public issues.
+
+Report vulnerabilities privately to [security@almarfeld.com](mailto:security@almarfeld.com).
+See [SUPPORT.md](SUPPORT.md) and [SECURITY.md](SECURITY.md).
+
+---
+
+**ALMARFELD** · Independent software development · [almarfeld.com](https://almarfeld.com)
+
+[FolderWatch product page](https://almarfeld.com/software/folderwatch/) ·
+[General enquiries](mailto:contact@almarfeld.com) · [MIT license](LICENSE)
