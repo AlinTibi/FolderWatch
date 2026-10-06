@@ -6,5 +6,6 @@ public enum ResultFilter
     Added,
     Removed,
     Modified,
-    Unchanged
+    Unchanged,
+    Inaccessible
 }

@@ -3,7 +3,12 @@ using System.Security.Cryptography;
 
 namespace FolderWatch.App.Services;
 
-public sealed class HashService
+public interface IFileHasher
+{
+    Task<string> ComputeSha256Async(string filePath, CancellationToken cancellationToken = default);
+}
+
+public sealed class HashService : IFileHasher
 {
     public async Task<string> ComputeSha256Async(string filePath, CancellationToken cancellationToken = default)
     {
@@ -11,8 +16,9 @@ public sealed class HashService
             filePath,
             FileMode.Open,
             FileAccess.Read,
-            FileShare.ReadWrite,
-            bufferSize: 1024 * 1024,
+            // Writers and deletes cannot race a successful capture on Windows.
+            FileShare.Read,
+            bufferSize: 64 * 1024,
             useAsync: true);
 
         using var sha256 = SHA256.Create();

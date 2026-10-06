@@ -24,3 +24,10 @@ jobs:
 
       - name: Build
         run: dotnet build FolderWatch.sln --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test FolderWatch.sln --configuration Release --no-build
+
+      - name: Validate portable packaging
+        shell: pwsh
+        run: ./scripts/package.ps1 -Tag v1.1.0

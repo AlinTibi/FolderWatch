@@ -5,7 +5,8 @@ public enum ChangeType
     Added,
     Removed,
     Modified,
-    Unchanged
+    Unchanged,
+    Inaccessible
 }
 
 public sealed class ComparisonItem
@@ -14,4 +15,7 @@ public sealed class ComparisonItem
     public ChangeType Change { get; init; }
     public long? OldSize { get; init; }
     public long? NewSize { get; init; }
+    public DateTime? OldModified { get; init; }
+    public DateTime? NewModified { get; init; }
+    public string Reason { get; init; } = string.Empty;
 }
