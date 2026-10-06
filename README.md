@@ -4,10 +4,10 @@ FolderWatch is a lightweight, fully offline Windows desktop tool for snapshottin
 
 ## Current release and download
 
-[FolderWatch v1.0.0](https://github.com/AlinTibi/FolderWatch/releases/tag/v1.0.0)
+[FolderWatch v1.1.0](https://github.com/AlinTibi/FolderWatch/releases/tag/v1.1.0)
 is the current Windows x64 release.
 
-[Download the portable ZIP](https://github.com/AlinTibi/FolderWatch/releases/download/v1.0.0/FolderWatch-v1.0.0-win-x64.zip),
+[Download the portable ZIP](https://github.com/AlinTibi/FolderWatch/releases/download/v1.1.0/FolderWatch-v1.1.0-win-x64.zip),
 extract it, and run `FolderWatch.exe`. Keep the extracted files together.
 
 ## Screenshot
