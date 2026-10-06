@@ -1,4 +1,4 @@
-# FolderWatch v1.1.0 — release candidate (unreleased)
+# FolderWatch v1.1.0
 
 - Read failures, locks, files changing during capture and skipped reparse points are recorded as Inaccessible with a reason. A partial directory scan never makes its unknown contents look deleted.
 - Partial snapshots retain successfully captured files and show captured/skipped entry counts. An incomplete baseline also prevents unsupported Added claims.
@@ -13,3 +13,5 @@
 Rules are session-only; no new settings file is written. Saved snapshots keep their rules. None / Reset clears the rules for new snapshots.
 
 Limits: inaccessible counts describe diagnostic entries, including directories; they cannot count unknown files inside an unreadable directory. Capture is not a filesystem-wide atomic transaction. Per-file sharing restrictions and before/after checks reject detected changes; retry partial scans when files are available.
+
+Requirements: Windows 10/11 x64.

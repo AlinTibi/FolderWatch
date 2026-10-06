@@ -48,4 +48,4 @@ jobs:
           "artifacts/rc/${{ steps.package.outputs.zip_name }}"
           "artifacts/rc/${{ steps.package.outputs.zip_name }}.sha256"
           --title "FolderWatch ${{ github.ref_name }}"
-          --generate-notes
+          --notes-file docs/release-notes-v1.1.0.md

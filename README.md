@@ -16,7 +16,7 @@ extract it, and run `FolderWatch.exe`. Keep the extracted files together.
 
 ## Features
 
-The source branch prepares **v1.1.0 (unreleased)**. Public downloads above still refer to v1.0.0. See the [release candidate notes](docs/release-notes-v1.1.0.md).
+The v1.1.0 features are described below. See the [release notes](docs/release-notes-v1.1.0.md).
 
 - Select any local folder and create a JSON snapshot of its contents
 - Snapshot stores relative path, size, modified time and SHA-256 hash per file
@@ -66,7 +66,7 @@ dotnet build FolderWatch.sln -c Release
 dotnet test FolderWatch.sln -c Release
 ```
 
-To create the local, unpublished v1.1.0 release candidate using the same packaging script as release CI:
+To create a local v1.1.0 package using the same packaging script as release CI:
 
 ```powershell
 ./scripts/package.ps1 -Tag v1.1.0
