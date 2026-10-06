@@ -117,6 +117,7 @@ public sealed class SnapshotTests : IDisposable
     [InlineData("src/*.cs", "src/nested/a.cs", false)]
     [InlineData("src/**", "src/nested/a.cs", true)]
     [InlineData("src/**", "src", true)]
+    [InlineData("src/**", "nested/src/a.cs", false)]
     [InlineData("**/*.json", "one.json", true)]
     [InlineData("bin", "nested/bin/output.dll", true)]
     [InlineData(".git", "project/.git/config", true)]
@@ -225,5 +226,17 @@ public sealed class SnapshotTests : IDisposable
     {
         var path = Write("bad.folderwatch.json", "{\"Files\":null}");
         await Assert.ThrowsAsync<InvalidDataException>(() => _scanner.LoadAsync(path));
+    }
+    [Theory]
+    [InlineData(ResultFilter.Added, ChangeType.Added)]
+    [InlineData(ResultFilter.Removed, ChangeType.Removed)]
+    [InlineData(ResultFilter.Modified, ChangeType.Modified)]
+    [InlineData(ResultFilter.Unchanged, ChangeType.Unchanged)]
+    [InlineData(ResultFilter.Inaccessible, ChangeType.Inaccessible)]
+    public void EveryStatusFilterKeepsOnlyThatStatus(ResultFilter filter, ChangeType expected)
+    {
+        var rows = Enum.GetValues<ChangeType>().Select(c => new ComparisonItem { Change = c }).ToList();
+        Assert.Equal(expected, Assert.Single(CompareService.ApplyFilter(rows, filter)).Change);
+        Assert.Equal(5, CompareService.ApplyFilter(rows, ResultFilter.All).Count);
     }
 }

@@ -49,8 +49,12 @@ public sealed class CompareService
         return issues.TryGetValue(".", out var root) && root.IsDirectory ? root : null;
     }
 
-    public static IReadOnlyList<ComparisonItem> ApplyFilter(IReadOnlyList<ComparisonItem> results, ResultFilter filter) =>
-        filter == ResultFilter.All ? results : results.Where(x => x.Change == ToChangeType(filter)).ToList();
+    public static IReadOnlyList<ComparisonItem> ApplyFilter(IReadOnlyList<ComparisonItem> results, ResultFilter filter)
+    {
+        if (filter == ResultFilter.All) return results;
+        var change = ToChangeType(filter);
+        return results.Where(x => x.Change == change).ToList();
+    }
     private static ChangeType ToChangeType(ResultFilter filter) => filter switch
     {
         ResultFilter.Added => ChangeType.Added, ResultFilter.Removed => ChangeType.Removed,

@@ -63,9 +63,10 @@ public sealed class FilterMatcher
     private static Regex Compile(string pattern)
     {
         // A directory/** exclusion also matches the directory itself for pruning.
+        var relativePathPattern = pattern.Contains('/');
         var descendants = pattern.EndsWith("/**", StringComparison.Ordinal);
         if (descendants) pattern = pattern[..^3];
-        var expression = new System.Text.StringBuilder(pattern.Contains('/') ? "^" : "(?:^|/)");
+        var expression = new System.Text.StringBuilder(relativePathPattern ? "^" : "(?:^|/)");
         for (var i = 0; i < pattern.Length; i++)
         {
             if (pattern[i] == '*' && i + 1 < pattern.Length && pattern[i + 1] == '*')
