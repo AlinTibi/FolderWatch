@@ -30,4 +30,4 @@ jobs:
 
       - name: Validate portable packaging
         shell: pwsh
-        run: ./scripts/package.ps1 -Tag v1.1.0
+        run: ./scripts/package.ps1 -Tag v1.1.1

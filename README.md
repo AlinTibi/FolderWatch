@@ -2,13 +2,9 @@
 
 FolderWatch is a lightweight, fully offline Windows desktop tool for snapshotting a folder and later detecting what changed in it — files added, removed or modified — using SHA-256 hashing.
 
-## Current release and download
+## Release and download
 
-[FolderWatch v1.1.0](https://github.com/AlinTibi/FolderWatch/releases/tag/v1.1.0)
-is the current Windows x64 release.
-
-[Download the portable ZIP](https://github.com/AlinTibi/FolderWatch/releases/download/v1.1.0/FolderWatch-v1.1.0-win-x64.zip),
-extract it, and run `FolderWatch.exe`. Keep the extracted files together.
+Download the current Windows x64 portable ZIP from the [latest release](https://github.com/AlinTibi/FolderWatch/releases/latest), extract it, and run `FolderWatch.exe`.
 
 ## Screenshot
 
@@ -16,7 +12,7 @@ extract it, and run `FolderWatch.exe`. Keep the extracted files together.
 
 ## Features
 
-The v1.1.0 features are described below. See the [release notes](docs/release-notes-v1.1.0.md).
+See the [v1.1.1 patch notes](docs/release-notes-v1.1.1.md) and [v1.1.0 feature notes](docs/release-notes-v1.1.0.md).
 
 - Select any local folder and create a JSON snapshot of its contents
 - Snapshot stores relative path, size, modified time and SHA-256 hash per file
@@ -66,10 +62,10 @@ dotnet build FolderWatch.sln -c Release
 dotnet test FolderWatch.sln -c Release
 ```
 
-To create a local v1.1.0 package using the same packaging script as release CI:
+To create a local v1.1.1 package using the same packaging script as release CI:
 
 ```powershell
-./scripts/package.ps1 -Tag v1.1.0
+./scripts/package.ps1 -Tag v1.1.1
 ```
 
 The ZIP and independently verifiable `.zip.sha256` file are written under `artifacts/rc`. This does not create a Git tag or GitHub release.

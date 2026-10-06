@@ -184,6 +184,30 @@ public sealed class SnapshotTests : IDisposable
         Assert.Contains("\"line1\nline2\"", text); Assert.DoesNotContain("omit.txt", text);
         Assert.Equal(1, CompareService.ComputeStats(rows).Inaccessible);
     }
+    [Fact] public async Task CancelledCsvExportPreservesExistingReport()
+    {
+        var path = Write("existing.csv", "previous report");
+        using var cancellation = new CancellationTokenSource();
+        cancellation.Cancel();
+        var rows = new[] { new ComparisonItem { Change = ChangeType.Unchanged, RelativePath = "one.txt" } };
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => new CsvExportService().ExportAsync(rows, path, cancellation.Token));
+        Assert.Equal("previous report", await File.ReadAllTextAsync(path));
+    }
+    [Fact] public async Task CsvCancelledDuringExportPreservesReportAndRemovesTemporaryFile()
+    {
+        var path = Write("existing.csv", "previous report");
+        using var cancellation = new CancellationTokenSource();
+        IEnumerable<ComparisonItem> Rows()
+        {
+            yield return new ComparisonItem { Change = ChangeType.Unchanged, RelativePath = "one.txt" };
+            cancellation.Cancel();
+            yield return new ComparisonItem { Change = ChangeType.Added, RelativePath = "two.txt" };
+        }
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(() => new CsvExportService().ExportAsync(Rows(), path, cancellation.Token));
+        Assert.Equal("previous report", await File.ReadAllTextAsync(path));
+        Assert.Empty(Directory.GetFiles(_root, "existing.csv.*.tmp"));
+    }
+
     private static SnapshotFile FileEntry(string path) => new() { RelativePath = path, Sha256 = new string('A', 64) };
 
     [Fact] public async Task ReparseDirectoryLoopIsSkipped()

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 64 64">
+  <title>FolderWatch application icon</title>
+  <polygon fill="#A5F0DF" points="8,16 10,14 24,14 29,20 54,20 56,22 56,48 54,50 10,50 8,48"/>
+  <rect fill="#0B1625" x="12" y="24" width="40" height="22" rx="3"/>
+  <polyline fill="none" stroke="#72DCE8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="21,30 43,30"/>
+  <polyline fill="none" stroke="#72DCE8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="39,26 43,30 39,34"/>
+  <polyline fill="none" stroke="#A5F0DF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="43,40 21,40"/>
+  <polyline fill="none" stroke="#A5F0DF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="25,36 21,40 25,44"/>
+</svg>

@@ -1,6 +1,6 @@
-param([string]$Tag = 'v1.1.0', [string]$OutputDirectory = 'artifacts/rc')
+param([string]$Tag = 'v1.1.1', [string]$OutputDirectory = 'artifacts/rc')
 $ErrorActionPreference = 'Stop'
-if ($Tag -notmatch '^v\d+\.\d+\.\d+$') { throw 'Use a release tag such as v1.1.0.' }
+if ($Tag -notmatch '^v\d+\.\d+\.\d+$') { throw 'Use a release tag such as v1.1.1.' }
 $projectRoot = Split-Path $PSScriptRoot -Parent
 [xml]$project = Get-Content -LiteralPath (Join-Path $projectRoot 'src/FolderWatch.App/FolderWatch.App.csproj')
 $version = ($project.Project.PropertyGroup | Where-Object Version).Version
@@ -16,7 +16,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'Portable publish failed.' }
     Copy-Item -LiteralPath (Join-Path $publish 'FolderWatch.exe') -Destination $stage
     foreach ($name in @('README.md', 'LICENSE')) { Copy-Item -LiteralPath (Join-Path $projectRoot $name) -Destination $stage }
-    Copy-Item -LiteralPath (Join-Path $projectRoot 'docs/release-notes-v1.1.0.md') -Destination (Join-Path $stage 'RELEASE-NOTES.md')
+    Copy-Item -LiteralPath (Join-Path $projectRoot 'docs/release-notes-v1.1.1.md') -Destination (Join-Path $stage 'RELEASE-NOTES.md')
     $zip = Join-Path $output "FolderWatch-$Tag-win-x64.zip"
     Compress-Archive -Path (Join-Path $stage '*') -DestinationPath $zip -CompressionLevel Optimal -Force
     $hash = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()

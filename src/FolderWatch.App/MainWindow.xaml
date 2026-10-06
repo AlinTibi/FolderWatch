@@ -1,7 +1,7 @@
 <Window x:Class="FolderWatch.App.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="FolderWatch" Height="720" Width="1100" MinHeight="560" MinWidth="860"
+        Icon="Assets/folderwatch.ico" Title="FolderWatch" Height="720" Width="1100" MinHeight="560" MinWidth="860"
         WindowStartupLocation="CenterScreen" Background="{StaticResource BgBrush}" Foreground="{StaticResource TextBrush}" FontFamily="Segoe UI">
     <Grid Margin="20">
         <Grid.RowDefinitions>

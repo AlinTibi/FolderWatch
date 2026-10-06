@@ -6,14 +6,15 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>FolderWatch</AssemblyName>
+    <ApplicationIcon>Assets/folderwatch.ico</ApplicationIcon>
     <RootNamespace>FolderWatch.App</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <FileVersion>1.1.1.0</FileVersion>
     <Product>FolderWatch</Product>
     <Description>Windows folder snapshot and file change comparison tool</Description>
     <Company>ALMARFELD</Company>
@@ -29,6 +30,7 @@
     <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
   </PropertyGroup>
   <ItemGroup>
+    <Resource Include="Assets/folderwatch.ico" />
     <ProjectReference Include="../FolderWatch.Core/FolderWatch.Core.csproj" />
   </ItemGroup>
 </Project>
